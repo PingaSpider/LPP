@@ -60,3 +60,59 @@
         (list(mas-larga (first lista1) ( first lista2))
              (mas-larga (second lista1) (second lista2))
              (mas-larga (third lista1) (third lista2))))
+             
+           
+#lang racket
+;EJERCIO CARTAS
+
+;Definimos los diferentes palos
+(define pica '♠)
+(define corazon '♥)
+(define diamante '♦)
+(define trebol   '♣)
+
+(define (obten-palo palo)
+  (cond ((equal? palo pica)
+         (string->symbol "Picas"))
+        ((equal? palo corazon)
+         (string->symbol "Corazones"))
+        ((equal? palo diamante)
+         (string->symbol "Diamantes"))
+        (else string->symbol "Treboles")))
+
+;Cuando defini la funcion, no puedo devolver un numero, me exige un procedimiento
+;tengo duda respecto a esto, lo resolvi con una suma pero quiero que me lo aclare en clase porfa
+(define (obten-valor valor)
+  (cond ((equal? valor #\J)
+        (+ 10 0))
+        ((equal? valor #\Q)
+        (+ 11 0))
+        ((equal? valor #\K)
+        (+ 12 0))
+        ((equal? valor #\A)
+        (+ 1 0))
+        ;en caso de no ser ninguno sera alguno numero normal de la baraja
+        (else(- (char->integer valor) 48))))
+
+;usamo symbol-string para convertir en string las cartas que recibamos y poder trabajar sobre sus caracteres
+(define (carta lacarta)
+  (cons (obten-valor(string-ref (symbol->string lacarta) 0))
+        (obten-palo (string-ref (symbol->string lacarta) 1))))
+
+;comparamos si dos cartas son iguales
+(define (compara-carta carta1 carta2 carta3)
+  (cond ((= (car (carta carta1)) (car (carta carta2)) (car (carta carta3)))
+        (string->symbol "trio"))
+        ((= (car (carta carta1)) (car (carta carta2)))
+        (string->symbol "pareja"))
+        ((= (car (carta carta1)) (car (carta carta3)))
+        (string->symbol "pareja"))
+        ((= (car (carta carta3)) (car (carta carta2)))
+        (string->symbol "pareja"))
+        (else "nada")))
+           
+ ;definimos juagda que creara un string con la info
+(define (jugada-mano carta1 carta2 carta3)
+  (if (equal? (compara-carta carta1 carta2 carta3) (string->symbol "nada"))
+              (string->symbol "nada")
+              (string->append (compara-carta carta1 carta2 carta3) " de "))) 
