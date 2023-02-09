@@ -99,17 +99,22 @@
   (cons (obten-valor(string-ref (symbol->string lacarta) 0))
         (obten-palo (string-ref (symbol->string lacarta) 1))))
 
+;con esta funcion aclaramos un poco del codigo de jugada-mano
+;asi no se hace tan pesado de leer
+(define (number-char carta1)
+  (number->string(car (carta carta1))))
+
 ;comparamos si las cartas son iguales y hacemos el string
 ;la igualdad debe ser solo numerica no de palos
-(define (compara-carta carta1 carta2 carta3)
+(define (jugada-mano carta1 carta2 carta3)
   (cond ((= (car (carta carta1)) (car (carta carta2)) (car (carta carta3)))
-        (string->append "trio de " (car carta1))
+        (string-append "trio de " (number-char carta1)))
         ((= (car (carta carta1)) (car (carta carta2)))
-        (string->append "pareja de " (car carta1))
+        (string-append "pareja de " ((number-char carta1))))
         ((= (car (carta carta1)) (car (carta carta3)))
-        (string->append "pareja de " (car (carta carta1))
+        (string-append "pareja de " (number-char carta1)))
         ((= (car (carta carta3)) (car (carta carta2)))
-        (string->append  "pareja de " (car (carta carta2)))
+        (string-append  "pareja de " ((number-char carta2))))
         (else "nada")))
            
 
