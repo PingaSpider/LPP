@@ -64,21 +64,22 @@
            
 #lang racket
 ;EJERCIO CARTAS
-
 ;Definimos los diferentes palos
-(define pica '♠)
-(define corazon '♥)
-(define diamante '♦)
-(define trebol   '♣)
+;para facilitar trabajo haremos un string con el caracter
+;lo que busco es trabajar con cadenas
+(define pica (make-string 1 #\♠))
+(define corazon (make-string 1 #\♥))
+(define diamante (make-string 1 #\♦))
+(define trebol   (make-string 1 #\♣))
 
 (define (obten-palo palo)
-  (cond ((equal? palo pica)
+  (cond ((string=? palo pica)
          (string->symbol "Picas"))
-        ((equal? palo corazon)
+        ((string=? palo corazon)
          (string->symbol "Corazones"))
-        ((equal? palo diamante)
-         (string->symbol "Diamantes"))
-        (else string->symbol "Treboles")))
+        ((string=? palo trebol)
+         (string->symbol "Treboles"))
+        (else (string->symbol "Diamantes"))))
 
 ;Cuando defini la funcion, no puedo devolver un numero, me exige un procedimiento
 ;tengo duda respecto a esto, lo resolvi con una suma pero quiero que me lo aclare en clase porfa
@@ -93,6 +94,12 @@
         (+ 1 0))
         ;en caso de no ser ninguno sera alguno numero normal de la baraja
         (else(- (char->integer valor) 48))))
+
+;usamo symbol-string para convertir en string las cartas que recibamos y poder trabajar sobre sus caracteres
+(define (carta lacarta)
+  (cons (obten-valor(string-ref (symbol->string lacarta) 0))
+        (obten-palo (make-string 1 (string-ref (symbol->string lacarta) 1)))))
+
 
 ;usamo symbol-string para convertir en string las cartas que recibamos y poder trabajar sobre sus caracteres
 (define (carta lacarta)
