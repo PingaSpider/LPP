@@ -26,3 +26,99 @@
              '("aui" "a" "ae" "c" "aeiou")
              '("hola" "b" "es" "que" "cinco"))
 ; ⇒ (("a" . "b") ("ae" . "es") ("aeiou" . "cinco"))
+
+
+(map (lambda (x)
+         (cond 
+            ((symbol? x) (symbol->string x))
+            ((number? x) (number->string x))
+            ((boolean? x) (if x "#t" "#f"))
+            (else "desconocido"))) '(1 #t hola #f (1 . 2))) ; ⇒ ?
+
+(filter (lambda (x) 
+            (equal? (string-ref (symbol->string x) 1) #\a)) 
+    '(alicante barcelona madrid almería)) ; ⇒ ?
+
+(foldr (lambda (dato resultado)
+          (string-append dato "*" resultado)) "" 
+          '("Hola" "que" "tal")) ; ⇒ ?
+
+(foldr append '() '((1 2) (3 4 5) (6 7) (8))) ; ⇒ ?
+
+(foldl (lambda (dato resultado)
+         (string-append
+          (symbol->string (car dato))
+          (symbol->string (cdr dato))
+          resultado)) "" '((a . b) (hola . adios) (una . pareja))) ; ⇒ ?
+
+(foldr (lambda (dato resultado)
+           (cons (+ (car resultado) dato)
+                 (+ (cdr resultado) 1))) '(0 . 0) '(1 1 2 2 3 3)) ; ⇒ ?
+
+(apply + (map cdr '((1 . 3) (2 . 8) (2 . 4)))) ; ⇒ ?
+
+(apply min (map car (filter (lambda (p)
+                                  (> (car p) (cdr p))) 
+                                  '((3 . 1) (1 . 20) (5 . 2))))) ; ⇒ ?
+    
+
+; Los siguientes ejercicios utilizan esta definición de lista
+
+(define lista '((2 . 7) (3 . 5) (10 . 4) (5 . 5)))
+
+
+; Queremos obtener una lista donde cada número es la suma de las
+; parejas que son pares
+
+(filter even?
+        (map (lambda (x) (+ (car x)
+                                 (cdr x)))
+               lista))
+; ⇒ (8 14 10)
+
+; Queremos obtener una lista de parejas invertidas donde la "nueva"
+; parte izquierda es mayor que la derecha.
+
+(filter (lambda (x) (>(car x) (cdr x)))
+        (map (lambda(x) (cons (cdr x) (car x))) lista))
+; ⇒ ((7 . 2) (5 . 3))
+
+
+(define (f1 x) (lambda (y z) (string-append y z x)))
+(define g1 (f1 "a"))
+(check-equal? (g1 "clase" "lpp") "claselppa")
+
+
+
+; Queremos obtener una lista cuyos elementos son las partes izquierda
+; de aquellas parejas cuya suma sea par.
+(foldr cons '()
+        (map car (filter (lambda (x) (even? (+ (car x) (cdr x)))) lista)))
+; ⇒ (3 10 5)
+
+
+
+
+(define (f2 x) (lambda (y z) (list y x z)))
+(define g2 (f2 "lpp"))
+(check-equal? (g2 "hola" "clase") (list "hola" "lpp" "clase"))
+
+
+(define (f3 g3) (lambda(z x) (g3 z x)))
+(check-equal? ((f3 cons) 3 4) '(3 . 4))
+
+
+;EJERCICIO 4
+
+(define (contar-iguales lista)
+  (foldr + 0 (map (lambda (x)
+                  (if(equal? (car x) (cdr x))
+                     1
+                     0)) lista)))
+
+(contar-iguales 
+   '((2 . 3) ("hola" . "hola") (\#a . \#a) (true . false))) 
+; ⇒ 2
+(contar-iguales
+   '((2 . "hola") ("hola" . 3) (\#a . true) (\#b . false))) 
+; ⇒ 0
