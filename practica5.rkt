@@ -1,3 +1,12 @@
+(define (aplica-veces f1 f2 n x)
+  (if(= 0 n)
+     x
+     (f1(f2(aplica-veces f1 f2 (- n 1) x)))))
+
+(aplica-veces (lambda (x) (+ x 1)) (lambda (x) (+ x 2)) 2 10) ; ⇒ 16
+(aplica-veces (lambda (x) (* x x)) (lambda (x) (+ x 1)) 4 3) ; ⇒ 7072978201
+
+
 (define (comprueba pred lista1 lista2)
   (if(null? lista1)
      '()
