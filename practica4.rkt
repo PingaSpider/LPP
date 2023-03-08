@@ -36,3 +36,33 @@
      (if(> dato (first lista))
         (cons (first lista) (inserta-ordenada dato (rest lista)))
         (cons dato lista))))
+
+
+(define (mueve-al-principio lista dato)
+  (if (equal? dato (first lista))
+      (rest lista)
+      (cons (first lista) (mueve-al-principio (rest lista) (dato)))))
+
+
+;LISTA_SIMBOLOS
+(define (comprueba simbol num)
+  (if(=(string-length (symbol->string simbol)) num)
+     #t
+     #f))
+
+
+ (define (comprueba-simbolos lista-simbolos lista-num)
+   (if(null? lista-simbolos)
+      '()
+      
+      (if(comprueba (first lista-simbolos) (first lista-num))
+         (cons (cons (first lista-simbolos) (first lista-num)) (comprueba-simbolos (rest lista-simbolos)
+                                                                                (rest lista-num)))
+         (comprueba-simbolos (rest lista-simbolos) (rest lista-num)))))
+
+(comprueba-simbolos '(este es un ejercicio de examen) '(2 1 2 9 1 6))
+
+
+
+
+
