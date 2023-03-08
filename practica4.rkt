@@ -28,3 +28,11 @@
       (if(null? lista2)
           lista1
           (cons (mayor (first lista1) (first lista2)) (cadenas-mayores (rest lista1) (rest lista2))))))
+          
+          
+(define (inserta-ordenada dato lista)
+  (if(null? lista)
+     (list dato)
+     (if(> dato (first lista))
+        (cons (first lista) (inserta-ordenada dato (rest lista)))
+        (cons dato lista))))
