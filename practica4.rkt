@@ -64,5 +64,12 @@
 
 
 
+(define (expande-pareja pareja)
+  (if(= 0 (cdr pareja))
+        '()
+        (cons (car pareja) (expande-pareja (cons (car pareja)
+                                                 (- (cdr pareja) 1))))))
 
+(expande-pareja '(hola . 3)) ; ⇒ (hola hola hola)
+(expande-pareja '(#t . 5)) ; ⇒ (#t #t #t #t #t)
 
