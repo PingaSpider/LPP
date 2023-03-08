@@ -122,3 +122,24 @@
 (contar-iguales
    '((2 . "hola") ("hola" . 3) (\#a . true) (\#b . false))) 
 ; ⇒ 0
+
+
+(define (suma-n-izq n lista)
+  (map (lambda (x)
+         (cons (+ (car x) n) (cdr x))) lista))
+
+(suma-n-izq 10 '((1 . 3) (0 . 9) (5 . 8) (4 . 1)))
+; ⇒ ((11 . 3) (10 . 9) (15 . 8) (14 . 1))
+
+
+(define (aplica-2 func lista-parejas)
+  (map (lambda (x)
+         (func (car x) (cdr x))) lista-parejas))
+
+(aplica-2 + '((2 . 3) (1 . -1) (5 . 4)))
+; ⇒ (5 0 9)
+(aplica-2 (lambda (x y)
+             (if (even? x)
+                 y
+                 (* y -1))) '((2 . 3) (1 . 3) (5 . 4) (8 . 10)))
+; ⇒ (3 -3 -4 10)
