@@ -74,3 +74,30 @@
 (expande-pareja '(#t . 5)) ; ⇒ (#t #t #t #t #t)
 
 
+;EJERCICIO 2
+
+(define (expande-pareja pareja)
+  (expande-pareja-iter pareja '()))
+
+(define (expande-pareja-iter pareja result)
+  (if(= 0 (cdr pareja))
+     result
+     (expande-pareja-iter (cons (car pareja)(- (cdr pareja) 1)) (append result (list (car pareja))))))
+
+
+
+
+(expande-pareja (cons 'a 4)) ; ⇒ (a a a a)
+;(expande-parejas '(#t . 3) '("LPP" . 2) '(b . 4))
+; ⇒ (#t #t #t "LPP" "LPP" b b b b)
+
+
+;2B
+; IMPORTANTE: append debe recibir siempre dos lista pq sino hace una pareja
+(define (rotar k lista)
+  (if (= 0 k)
+      lista
+      (rotar (- k 1) (append (rest lista) (list(first lista))))))
+
+(rotar 4 '(a b c d e f g)) ; ⇒ (e f g a b c d)
+(rotar 5 '(a b c d e f g)) ; ⇒ (e f g a b c d)
