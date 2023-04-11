@@ -101,3 +101,17 @@
 
 (rotar 4 '(a b c d e f g)) ; ⇒ (e f g a b c d)
 (rotar 5 '(a b c d e f g)) ; ⇒ (e f g a b c d)
+
+
+;EJERCICIO 3
+(define (binario-a-decimal binario)
+  (binario-a-decimal-iter binario 0))
+
+(define (binario-a-decimal-iter lista result)
+        (if (null? lista)
+            result
+            (binario-a-decimal-iter (rest lista) (+(* 2 result) (first lista)))))
+  
+(binario-a-decimal '(1 1 1 1)) ; ⇒ 15
+(binario-a-decimal '(1 1 0)) ; ⇒ 6
+(binario-a-decimal '(1 0)) ; ⇒ 2
