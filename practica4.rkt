@@ -102,6 +102,18 @@
 (rotar 4 '(a b c d e f g)) ; ⇒ (e f g a b c d)
 (rotar 5 '(a b c d e f g)) ; ⇒ (e f g a b c d)
 
+;mi-foldl
+(define (mi-foldl funt inicio lista)
+  (mi-foldl-iter funt inicio lista ))
+
+(define (mi-foldl-iter funt inicio lista)
+  (if (null? lista)
+      inicio
+      (mi-foldl-iter funt (funt (first lista) inicio) (rest lista))))
+
+(mi-foldl string-append "****" '("hola" "que" "tal")) ;⇒ "talquehola****"
+(mi-foldl cons '() '(1 2 3 4)) ; ⇒ (4 3 2 1)
+
 
 ;EJERCICIO 3
 (define (binario-a-decimal binario)
