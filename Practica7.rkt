@@ -93,3 +93,70 @@
 
 (todos-positivos? '(1 (2 (3 (-3))) 4)) ; ⇒ #f
 (todos-positivos-fos? '(1 (2 (3 (3))) 4)) ; ⇒ #t
+
+;CUMPLEN PREDICADO
+;EN ESTE EJERCICIO UTILICE APLANA PQ NO DI CON UNA FORMA DE COMPROBAR HOJA Y PREDICADO JUNTOS PARA CONSTRUIR LA LISTA
+;SIN TENER FALLOS.
+;POR ESO EN PRIMER LUGAR APLANO LA LISTA Y LUEGO UTILIZO RECURSION NORMAL PARA CREAR LA LISTA FILTRADA
+(define (cumplen-predicado pred lista)
+ (aux pred (aplana lista)))
+
+(define (aux pred lista)
+  (cond ((null? lista) '())
+        ((pred (first lista)) (append (list (first lista)) (aux pred (rest lista))))
+        (else (aux pred (rest lista)))))
+        
+(define (cumplen-predicado-fos pred lista)
+  (filter pred (aplana lista)))
+  
+  
+(define (busca-mayores n lista)
+  (cumple-predicado-fos (lambda (x)
+                      (> x n)) lista))
+
+(busca-mayores 10 '(-1 (20 (10 12) (30 (25 (15)))))) ; ⇒ (20 12 30 25 15)
+
+(define (empieza-por char lista-pal)
+  (cumple-predicado-fos (lambda (x)
+                          (equal? char (string-ref (symbol->string x) 0))) lista-pal))
+
+(empieza-por #\m '((hace (mucho tiempo)) (en) (una galaxia ((muy  muy) lejana))))
+; ⇒ (mucho muy muy)
+
+
+(define (sustituye-elem elem-old elem-new lista)
+  (cond ((null? lista) '())
+        ((hoja? lista) (if(equal? lista elem-old) elem-new lista))
+        (else
+         (cons (sustituye-elem elem-old elem-new (first lista))
+               (sustituye-elem elem-old elem-new (rest lista))))))
+
+(sustituye-elem 'c 'h '(a b (c d (e c)) c (f (c) g)))
+; ⇒ (a b (h d (e h)) h (f (h) g))
+
+
+;OPCION FOS
+(define (sustituye-elem-fos elem-old elem-new lista)
+  (cond ((hoja? lista) (if(equal? elem-old lista) elem-new lista))
+        (else
+        ;SI SOBRE MAP APLICAS LA LLAMADA SIN HACER LAMBDA ESTARA MAL
+         (map (lambda (x)
+                (sustituye-elem-fos elem-old elem-new x)) lista))))
+                
+                
+;ESTE ME COSTO BASTANTE
+(define (intersecta lista1 lista2)
+(cond ((or(null? lista1)(null? lista2))
+       '())
+      ((if(hoja? (first lista1))
+         (if(hoja? (first lista2))
+            (cons (cons (first lista1)(first lista2)) (intersecta (rest lista1)(rest lista2)))
+            (intersecta (rest lista1)(rest lista2)))
+         (if(plana? (first lista1))
+            (if(hoja? (first lista2))
+               (intersecta (rest lista1)(rest lista2))
+               (cons (cons (first (first lista1)) (first (first lista2))) (intersecta (rest lista1)(rest lista2))))
+            (intersecta (rest lista1)(rest lista2)))))
+      (else (intersecta (rest lista1)(rest lista2)))))
+
+            
