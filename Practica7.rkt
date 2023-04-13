@@ -159,4 +159,22 @@
             (intersecta (rest lista1)(rest lista2)))))
       (else (intersecta (rest lista1)(rest lista2)))))
 
+
+
+;MEZCLAR
+(define (mezclar lista1 lista2 n)
+  (cond ((null? lista1) '())
+        ((if(>= n 2)
+            (if(or(hoja? (first lista1))(plana?(first lista1)))
+               (cons (first lista1) (mezclar (rest lista1) (rest lista2) n))
+               (cons (first lista2)(mezclar (rest lista1) (rest lista2) n) ))
+            (if(hoja? (first lista1))
+               (cons(first lista1)(mezclar (rest lista1)(rest lista2) n))
+               (cons (first lista2)(mezclar (rest lista1)(rest lista2) n)))))))
+
+
+
+(define lista1 '(((a b) ((c))) (d) e))
+(define lista2 '(((1 2) ((3))) (4) 5))
+(mezclar lista1 lista2 2) ; ⇒ (((1 2) ((3))) (d) e)
             
