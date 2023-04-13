@@ -54,3 +54,42 @@
 (altura '(1 (2 3) 4)) ; ⇒ 2
 (altura '(1 (2 (3)) 3)) ; ⇒ 3
 
+
+
+
+;EJERCICIO 1 
+(define lista-a '((a b) d (c (e) (f g) h)))
+(check-equal? (fourth (third lista-a)) 'h)
+
+;EJERCICIO 2
+;A CONCATENA
+(define (concatena lista)
+  (cond ((null? lista) "")
+        ((hoja? lista) (symbol->string lista))
+        (else (string-append (concatena (first lista))
+                             (concatena (rest lista))))))
+
+(concatena '(a b (c) d)) ; ⇒ "abcd"
+(concatena '(a (((b)) (c (d (e f (g))) h)) i)) ; ⇒ "abcdefghi"
+
+
+;TODOS POSITIVOS
+;B
+(define (todos-positivos? lista)
+  (cond
+    ((null? lista)#t)
+    ((hoja? lista) (< 0 lista))
+    (else (and (todos-positivos? (first lista))
+             (todos-positivos? (rest lista))))))
+
+;Recuerda que cuando utilizas FOS no es necesario comprobar que
+;la lista ha llegado a su fin
+(define(todos-positivos-fos? lista)
+        (if(hoja? lista)
+           (< 0 lista)
+           (for-all? (lambda (elem)
+                          (todos-positivos-fos? elem))lista)))
+                      
+
+(todos-positivos? '(1 (2 (3 (-3))) 4)) ; ⇒ #f
+(todos-positivos-fos? '(1 (2 (3 (3))) 4)) ; ⇒ #t
