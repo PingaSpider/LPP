@@ -214,7 +214,7 @@ define (raices-mayores-arbol? arbol)
                      (40 (25 () () )
                          (43 () ()))))
 
-
+;EJERCICO 6
 (define(ordenado-entre? arbolb min max)
   (cond ((vacio-arbolb? arbolb) #t)
         ((> (dato-arbolb arbolb) max) #f)
@@ -253,6 +253,38 @@ define (raices-mayores-arbol? arbol)
 (ordenado-mayor? arbolb1 20) ; ⇒ #f
 (ordenado-mayor? arbolb2 0) ; ⇒ #f
         
+
+
+(define (ordenado? arbol)
+  (and (ordenado-menor? arbol (mayor-arbol arbol))
+       (ordenado-mayor? arbol (menor-arbol arbol))))
+
+(ordenado? arbolb1) ; ⇒ #t
+(ordenado? arbolb2) ; ⇒ #f
+
+
+;EJERCICIO 7
+(define arbolb '(9
+                (5 (3
+                    (1 () ())
+                    (4 () ()))
+                   (7 () ()))
+                (15 (13
+                     (10 () ())
+                     (14 () ()))
+                    (29 ()
+                        (23 () ())))))
+
+(define (camino-arbolb arbol camino)
+  (cond ((null? camino)
+         '())
+        ((equal? (first camino) '<)
+         (camino-arbolb (hijo-izq-arbolb arbol) (rest camino)))
+        ((equal? (first camino) '>)
+         (camino-arbolb (hijo-der-arbolb arbol) (rest camino)))
+        (else
+         (cons (dato-arbolb arbol) (camino-arbolb arbol (rest camino))))))
+         
          
 
 
